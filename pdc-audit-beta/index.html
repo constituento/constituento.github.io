@@ -1,0 +1,57 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <script>
+			document.addEventListener("DOMContentLoaded", function() {
+				//$("#wufoo_form").attr("height",$(window).height())
+				if (navigator.geolocation) {
+					navigator.geolocation.getCurrentPosition(
+						showPosition,
+						errorCallback,
+						{enableHighAccuracy: true}
+						);
+				} else {
+					//errorCallback(0)
+					var url = "https://constituentconsultants.wufoo.com/forms/q1flmsod09o011e/def/header=hide&field130="+"GPS disabled"
+					document.getElementById("wufoo_form").src = url
+				}
+				function showPosition(position) {
+					var url = "https://constituentconsultants.wufoo.com/forms/q1flmsod09o011e/def/"
+					+"field130=www.google.com/maps%3Fq="+position.coords.latitude+","+position.coords.longitude+"&"
+					+"field121="+position.coords.latitude+"&"
+					+"field122="+position.coords.longitude+"&"
+					+"field123="+position.coords.accuracy+"&"
+					+"field124="+position.coords.altitude+"&"
+					+"field125="+position.coords.altitudeAccuracy+"&"
+					+"field126="+position.coords.heading+"&"
+					+"field127="+position.coords.speed+"&"
+					+"field128="+position.coords.timestamp+"&"
+					+"header=hide"
+					console.log(url)
+					document.getElementById("wufoo_form").src = url
+					
+				}
+				function errorCallback(error){
+					var url = "https://constituentconsultants.wufoo.com/forms/q1flmsod09o011e/def/header=hide&field130="+error['message']
+					document.getElementById("wufoo_form").src = url
+				}
+			});
+        </script>
+		<style type="text/css">
+            body, html
+            {
+                margin: 0; padding: 0; height: 100%; overflow: hidden;
+            }
+
+            #content
+            {
+                position:absolute; left: 0; right: 0; bottom: 0; top: 0px; 
+            }
+        </style>
+    </head>
+    <body>
+		<div id="content">
+		<iframe id="wufoo_form" width='100%' height='100%' frameborder='0' marginheight='0' marginwidth='0'></iframe>
+		</div>
+    </body>
+</html>
