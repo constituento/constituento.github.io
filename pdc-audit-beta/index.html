@@ -1,57 +1,80 @@
 <!DOCTYPE HTML>
 <html>
     <head>
-        <script>
-			document.addEventListener("DOMContentLoaded", function() {
-				//$("#wufoo_form").attr("height",$(window).height())
-				if (navigator.geolocation) {
-					navigator.geolocation.getCurrentPosition(
-						showPosition,
-						errorCallback,
-						{enableHighAccuracy: true}
-						);
-				} else {
-					//errorCallback(0)
-					var url = "https://constituentconsultants.wufoo.com/forms/q1flmsod09o011e/def/header=hide&field130="+"GPS disabled"
-					document.getElementById("wufoo_form").src = url
-				}
-				function showPosition(position) {
-					var url = "https://constituentconsultants.wufoo.com/forms/q1flmsod09o011e/def/"
-					+"field130=www.google.com/maps%3Fq="+position.coords.latitude+","+position.coords.longitude+"&"
-					+"field121="+position.coords.latitude+"&"
-					+"field122="+position.coords.longitude+"&"
-					+"field123="+position.coords.accuracy+"&"
-					+"field124="+position.coords.altitude+"&"
-					+"field125="+position.coords.altitudeAccuracy+"&"
-					+"field126="+position.coords.heading+"&"
-					+"field127="+position.coords.speed+"&"
-					+"field128="+position.coords.timestamp+"&"
-					+"header=hide"
-					console.log(url)
-					document.getElementById("wufoo_form").src = url
-					
-				}
-				function errorCallback(error){
-					var url = "https://constituentconsultants.wufoo.com/forms/q1flmsod09o011e/def/header=hide&field130="+error['message']
-					document.getElementById("wufoo_form").src = url
-				}
-			});
-        </script>
-		<style type="text/css">
-            body, html
-            {
-                margin: 0; padding: 0; height: 100%; overflow: hidden;
-            }
-
-            #content
-            {
-                position:absolute; left: 0; right: 0; bottom: 0; top: 0px; 
-            }
-        </style>
-    </head>
-    <body>
-		<div id="content">
-		<iframe id="wufoo_form" width='100%' height='100%' frameborder='0' marginheight='0' marginwidth='0'></iframe>
-		</div>
-    </body>
+	<script>
+	document.addEventListener("DOMContentLoaded", function() {
+		function navSuccess(position){
+						defaultValues = "field130=www.google.com/maps%3Fq=" + position.coords.latitude + "," + position.coords.longitude + "&" +
+							"field121=" + position.coords.latitude + "&" +
+							"field122=" + position.coords.longitude + "&" +
+							"field123=" + position.coords.accuracy + "&" +
+							"field124=" + position.coords.altitude + "&" +
+							"field125=" + position.coords.altitudeAccuracy + "&" +
+							"field126=" + position.coords.heading + "&" +
+							"field127=" + position.coords.speed + "&" +
+							"field128=" + position.coords.timestamp + "&" +
+							"header=hide"
+						createWufoo(document,'script',defaultValues)
+					}
+		function navError(error){
+			defaultValues = "header=hide&field130=" + error['message']
+			createWufoo(document,'script',defaultValues)
+		}
+		function navDisabled(){
+			defaultValues = "header=hide&field130=" + "GPS disabled"
+			createWufoo(document,'script',defaultValues)
+		}
+		function getDefault(){
+			if (navigator.geolocation) {
+				navigator.geolocation.getCurrentPosition(
+					navSuccess,
+					navError,
+					{
+						enableHighAccuracy: true
+					}
+				);
+			} else {
+				navDisabled()
+			}
+			//console.log(defaultValues)
+		}
+function createWufoo(d, t, defaultValues) {
+    var s = d.createElement(t),
+        options = {
+            'userName': 'constituentconsultants',
+            'formHash': 'q1flmsod09o011e',
+            'autoResize': true,
+            'height': '2029',
+            'defaultValues': defaultValues,
+            'async': true,
+            'host': 'wufoo.com',
+            'header': 'hide',
+            'ssl': true
+        };
+    s.src = ('https:' == d.location.protocol ? 'https://' : 'http://') + 'www.wufoo.com/scripts/embed/form.js';
+    s.onload = s.onreadystatechange = function() {
+        var rs = this.readyState;
+        if (rs)
+            if (rs != 'complete')
+                if (rs != 'loaded') return;
+        try {
+            q1flmsod09o011e = new WufooForm();
+            q1flmsod09o011e.initialize(options);
+            q1flmsod09o011e.display();
+        } catch (e) {}
+    };
+    var scr = d.getElementsByTagName(t)[0],
+        par = scr.parentNode;
+    par.insertBefore(s, scr);
+};
+getDefault()
+//createWufoo(document,'script')
+	});
+	</script>
+	</head>
+	<body>
+	<div id="wufoo-q1flmsod09o011e">
+	Audit form will load once you allow or block GPS location tracking. To view the form without GPS, visit <a href="https://constituentconsultants.wufoo.com/forms/q1flmsod09o011e">this page</a>.
+</div>
+</body>
 </html>
