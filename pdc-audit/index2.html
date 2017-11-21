@@ -1,0 +1,104 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+	<title>PDC Audit Beta</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<script>
+	function setUsername(){
+		firstname = document.getElementById("FirstName").value
+		lastname = document.getElementById("LastName").value
+		username = firstname + " " + lastname
+		console.log(username)
+		localStorage.setItem("username",username.trim())
+	}
+	document.addEventListener("DOMContentLoaded", function() {
+		function navSuccess(position){
+						if (localStorage.getItem("username") === null) {
+							var username = ""
+						} else {
+							var username = localStorage.getItem("username")
+						}
+						defaultValues = "field130=www.google.com/maps%3Fq=" + position.coords.latitude + "," + position.coords.longitude + "&" +
+							"field121=" + position.coords.latitude + "&" +
+							"field122=" + position.coords.longitude + "&" +
+							"field123=" + position.coords.accuracy + "&" +
+							"field124=" + position.coords.altitude + "&" +
+							"field125=" + position.coords.altitudeAccuracy + "&" +
+							"field126=" + position.coords.heading + "&" +
+							"field127=" + position.coords.speed + "&" +
+							"field128=" + position.coords.timestamp + "&" +
+							"field2=" +username
+							//"header=hide"
+							console.log(defaultValues)
+						//localStorage.setItem("username","Joseph")
+						createWufoo(document,'script',defaultValues)
+					}
+		function navError(error){
+			//defaultValues = "header=hide&field130=" + error['message']
+			defaultValues = "field130=" + error['message']
+			createWufoo(document,'script',defaultValues)
+		}
+		function navDisabled(){
+			//defaultValues = "header=hide&field130=" + "GPS disabled"
+			defaultValues = "field130=" + "GPS disabled"
+			createWufoo(document,'script',defaultValues)
+		}
+		function getDefault(){
+			if (navigator.geolocation) {
+				navigator.geolocation.getCurrentPosition(
+					navSuccess,
+					navError,
+					{
+						enableHighAccuracy: true
+					}
+				);
+			} else {
+				navDisabled()
+			}
+			//console.log(defaultValues)
+		}
+function createWufoo(d, t, defaultValues) {
+    var s = d.createElement(t),
+        options = {
+            'userName': 'constituentconsultants',
+            'formHash': 'q1flmsod09o011e',
+            'autoResize': true,
+            'height': '2029',
+            'defaultValues': defaultValues,
+            'async': true,
+            'host': 'wufoo.com',
+            'header': 'show',
+            'ssl': true
+        };
+    s.src = ('https:' == d.location.protocol ? 'https://' : 'http://') + 'www.wufoo.com/scripts/embed/form.js';
+    s.onload = s.onreadystatechange = function() {
+        var rs = this.readyState;
+        if (rs)
+            if (rs != 'complete')
+                if (rs != 'loaded') return;
+        try {
+            q1flmsod09o011e = new WufooForm();
+            q1flmsod09o011e.initialize(options);
+            q1flmsod09o011e.display();
+        } catch (e) {}
+    };
+    var scr = d.getElementsByTagName(t)[0],
+        par = scr.parentNode;
+    par.insertBefore(s, scr);
+};
+getDefault()
+//createWufoo(document,'script')
+	});
+	</script>
+	</head>
+	<body>
+	<div>
+First name: <input type="text" id="FirstName" name="FirstName" value=""><br>
+Last name: <input type="text" id="LastName" name="LastName" value=""><br>
+<input type="submit" value="Submit" onclick="setUsername()">
+</div>
+	<div id="wufoo-q1flmsod09o011e">
+	Receiving location... To view the form without GPS, visit <a href="https://constituentconsultants.wufoo.com/forms/q1flmsod09o011e">this page</a>.
+</div>
+</body>
+</html>
